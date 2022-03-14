@@ -1,7 +1,8 @@
 import React from 'react';
+import { RecoilRoot } from 'recoil';
 
-function App() {
-  return <div>sadf</div>;
-}
+const App = () => {
+  return <RecoilRoot>Hello Recoil</RecoilRoot>;
+};
 
 export default App;

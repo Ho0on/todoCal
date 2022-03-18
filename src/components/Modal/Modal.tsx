@@ -36,19 +36,20 @@ const Container = styled.div`
 interface Props {
   isOpen: boolean;
   onClose: () => void;
-  selector?: string;
 }
 
 const Modal: React.FC<Props> = ({ children, isOpen, onClose, selector }) => {
   return (
-    <CSSTransition in={isOpen} timeout={300} classNames="modal" unmountOnExit>
-      <Portal selector={selector}>
-        <Overlay>
-          <Dim onClick={onClose} />
-          <Container>{children}</Container>
-        </Overlay>
-      </Portal>
-    </CSSTransition>
+    <>
+      {isOpen && (
+        <Portal selector="#modal-root">
+          <Overlay>
+            <Dim onClick={onClose} />
+            <Container>{children}</Container>
+          </Overlay>
+        </Portal>
+      )}
+    </>
   );
 };
 

@@ -38,7 +38,7 @@ interface Props {
   onClose: () => void;
 }
 
-const Modal: React.FC<Props> = ({ children, isOpen, onClose, selector }) => {
+const Modal: React.FC<Props> = ({ children, isOpen, onClose }) => {
   return (
     <>
       {isOpen && (

@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import { Todo } from './atom';
 
 const EtcItem = styled.li`
   padding: 2px 4px;
@@ -40,13 +41,6 @@ const Base = styled.ul`
     margin-top: 1px;
   }
 `;
-
-interface Todo {
-  id: string;
-  content: string;
-  done: boolean;
-  date: Date;
-}
 
 interface Props {
   items: Array<Todo>;

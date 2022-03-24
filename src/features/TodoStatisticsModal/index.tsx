@@ -2,6 +2,13 @@ import styled from '@emotion/styled/macro';
 import React, { useState } from 'react';
 import Modal from '../../components/Modal/Modal';
 import { HiOutlineTrash } from 'react-icons/hi';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { todoStatisticsModalOpenState, todoStatisticsState } from './atom';
+import {
+  filteredTodoListState,
+  selectedDateState,
+  todoListState,
+} from '../TodoList/atom';
 
 const ModalBody = styled.div`
   width: 100vw;
@@ -67,10 +74,20 @@ const Card = styled.div`
 `;
 
 const TodoStatisticsModal = () => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [todoList, setTodoList] = useRecoilState(todoListState);
+  const [isOpen, setIsOpen] = useRecoilState(todoStatisticsModalOpenState);
+
+  const selectedDate = useRecoilValue(selectedDateState);
+
+  const filteredTodoList = useRecoilValue(filteredTodoListState(selectedDate));
+  const statistics = useRecoilValue(todoStatisticsState(selectedDate));
 
   const handleClose = () => {
     setIsOpen(false);
+  };
+
+  const removeTodo = (id: string) => {
+    setTodoList(todoList.filter(todo => todo.id !== id));
   };
 
   return (
@@ -78,15 +95,24 @@ const TodoStatisticsModal = () => {
       <ModalBody>
         <Card>
           <Date>2021-09-12</Date>
-          <Statistics>할 일 0개 남음</Statistics>
+          <Statistics>
+            할 일 {statistics.total - statistics.done}개 남음
+          </Statistics>
           <TodoList>
-            <TodoItem>
-              <Content></Content>
-              <TodoActions></TodoActions>
-              <TodoActionButton>
-                <HiOutlineTrash />
-              </TodoActionButton>
-            </TodoItem>
+            {filteredTodoList?.map(todo => {
+              return (
+                <TodoItem>
+                  <Content>{todo.content}</Content>
+                  <TodoActions></TodoActions>
+                  <TodoActionButton
+                    secondary
+                    onClick={() => removeTodo(todo.id)}
+                  >
+                    <HiOutlineTrash />
+                  </TodoActionButton>
+                </TodoItem>
+              );
+            })}
           </TodoList>
         </Card>
       </ModalBody>
